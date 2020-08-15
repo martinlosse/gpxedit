@@ -41,18 +41,18 @@ public interface TimestampMode {
 
         @Override
         public TrackSegment updateTimestamps(TrackSegment trackSegment) {
-            List<Waypoint> originalPoints = trackSegment.getTrackPoints();
+            List<Waypoint> reversedPoints = trackSegment.getTrackPoints();
 
-            if (originalPoints.size() <= 1) {
+            if (reversedPoints.size() <= 1) {
                 return trackSegment;
             }
 
-            ZonedDateTime startTime = determineStartTime(originalPoints);
-            return adjustTimestamps(originalPoints, startTime);
+            ZonedDateTime startTime = determineStartTime(reversedPoints);
+            return adjustTimestamps(reversedPoints, startTime);
         }
 
-        private ZonedDateTime determineStartTime(List<Waypoint> originalPoints) {
-            Waypoint lastPoint = originalPoints.get(originalPoints.size() - 1);
+        private ZonedDateTime determineStartTime(List<Waypoint> reversedPoints) {
+            Waypoint lastPoint = reversedPoints.get(reversedPoints.size() - 1);
             return lastPoint.getTimestamp();
         }
     }
@@ -67,26 +67,24 @@ public interface TimestampMode {
 
         @Override
         public TrackSegment updateTimestamps(TrackSegment trackSegment) {
-            List<Waypoint> originalPoints = trackSegment.getTrackPoints();
+            List<Waypoint> reversedPoints = trackSegment.getTrackPoints();
 
-            if (originalPoints.size() <= 1) {
+            if (reversedPoints.size() < 1) {
                 return trackSegment;
             }
 
-            return adjustTimestamps(originalPoints, startTime);
+            return adjustTimestamps(reversedPoints, startTime);
         }
     }
 
     private static TrackSegment adjustTimestamps(List<Waypoint> reversedPoints, ZonedDateTime startTime) {
         Waypoint firstPt = reversedPoints.get(0);
-        Waypoint lastPt = reversedPoints.get(reversedPoints.size() - 1);
-
         Waypoint newFirst = new Waypoint(firstPt.getLatitude(), firstPt.getLongitude(), firstPt.getElevation(), startTime);
 
         List<Waypoint> updatedWaypoints = new ArrayList<>(reversedPoints.size());
         updatedWaypoints.add(newFirst);
 
-        for (int i = 1; i < reversedPoints.size() - 1; i++) {
+        for (int i = 1; i < reversedPoints.size(); i++) {
             Waypoint prevWp = reversedPoints.get(i - 1);
             Waypoint currWp = reversedPoints.get(i);
             Duration timeElapsed = Duration.between(currWp.getTimestamp(), prevWp.getTimestamp());
@@ -95,8 +93,6 @@ public interface TimestampMode {
 
             updatedWaypoints.add(new Waypoint(currWp.getLatitude(), currWp.getLongitude(), currWp.getElevation(), timestamp));
         }
-
-        updatedWaypoints.add(new Waypoint(lastPt.getLatitude(), lastPt.getLongitude(), lastPt.getElevation(), firstPt.getTimestamp()));
 
         return new TrackSegment(updatedWaypoints);
     }

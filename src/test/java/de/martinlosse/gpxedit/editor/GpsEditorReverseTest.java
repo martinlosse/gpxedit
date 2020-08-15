@@ -1,41 +1,27 @@
 package de.martinlosse.gpxedit.editor;
 
 import static de.martinlosse.gpxedit.util.GpxXmlUtil.waypoint;
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import de.martinlosse.gpxedit.model.TrackSegment;
 import de.martinlosse.gpxedit.model.Waypoint;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 public class GpsEditorReverseTest {
 
-    @MethodSource({"testDataDrop", "testDataReverse"})
+    @MethodSource({"testCasesDrop", "testCasesReverse", "testCasesStartAt"})
     @ParameterizedTest
     void testReverseDrop(TestCaseReverse testCase) {
-        TrackSegment reversed = reverse(testCase.sourceSegment, testCase.timestampMode);
+        TrackSegment reversed = GpsEditor.reverse(testCase.sourceSegment, testCase.timestampMode);
 
         assertThat(reversed).isEqualTo(testCase.reversedSegment);
     }
 
-    private TrackSegment reverse(TrackSegment sourceSegment, TimestampMode timestampMode) {
-        TrackSegment reversedSegment = reverseWaypointOrder(sourceSegment);
-
-        return timestampMode.updateTimestamps(reversedSegment);
-    }
-
-    private TrackSegment reverseWaypointOrder(TrackSegment sourceSegment) {
-        var reversedWps = new ArrayList<>(sourceSegment.getTrackPoints());
-        Collections.reverse(reversedWps);
-        TrackSegment reversedSegment = new TrackSegment(reversedWps);
-        return reversedSegment;
-    }
-
-    private static List<TestCaseReverse> testDataDrop() {
+    private static List<TestCaseReverse> testCasesDrop() {
         var testData = new ArrayList<TestCaseReverse>();
 
         // source segment
@@ -88,7 +74,7 @@ public class GpsEditorReverseTest {
         return testData;
     }
 
-    private static List<TestCaseReverse> testDataReverse() {
+    private static List<TestCaseReverse> testCasesReverse() {
         var testData = new ArrayList<TestCaseReverse>();
 
         // source segment
@@ -138,6 +124,62 @@ public class GpsEditorReverseTest {
             reversedPoints);
 
         testData.add(new TestCaseReverse(original, TimestampMode.reverse(), reversed));
+
+        return testData;
+    }
+
+    private static List<TestCaseReverse> testCasesStartAt() {
+        var testData = new ArrayList<TestCaseReverse>();
+
+        // source segment
+        List<Waypoint> points;
+        List<Waypoint> reversedPoints;
+        TrackSegment original;
+        TrackSegment reversed;
+
+        ZonedDateTime startAt = ZonedDateTime.parse("2161-07-01T12:00:00Z");
+
+        // reverse, startAt timestamp, n = 0
+        points = List.of();
+        reversedPoints = List.of();
+
+        original = new TrackSegment(points);
+        reversed = new TrackSegment(reversedPoints);
+
+        testData.add(new TestCaseReverse(original, TimestampMode.startAt(startAt), reversed));
+
+        // reverse, startAt timestamp, n = 1
+        points = List.of(
+            waypoint("52.1651800", "11.6835150", "43.0", "2020-08-06T18:42:22Z")
+        );
+
+        reversedPoints = List.of(
+            waypoint("52.1651800", "11.6835150", "43.0", "2161-07-01T12:00:00Z")
+        );
+
+        original = new TrackSegment(points);
+        reversed = new TrackSegment(reversedPoints);
+
+        testData.add(new TestCaseReverse(original, TimestampMode.startAt(startAt), reversed));
+
+        // reverse, startAt timestamp, n > 1
+        points = List.of(
+            waypoint("52.1650840", "11.6835130", "43.0", "2020-08-06T18:42:15Z"),
+            waypoint("52.1651380", "11.6835250", "43.0", "2020-08-06T18:42:17Z"),
+            waypoint("52.1651800", "11.6835150", "43.0", "2020-08-06T18:42:22Z")
+        );
+
+        reversedPoints = List.of(
+            waypoint("52.1651800", "11.6835150", "43.0", "2161-07-01T12:00:00Z"),
+            waypoint("52.1651380", "11.6835250", "43.0", "2161-07-01T12:00:05Z"),
+            waypoint("52.1650840", "11.6835130", "43.0", "2161-07-01T12:00:07Z")
+        );
+
+        original = new TrackSegment(points);
+        reversed = new TrackSegment(
+            reversedPoints);
+
+        testData.add(new TestCaseReverse(original, TimestampMode.startAt(startAt), reversed));
 
         return testData;
     }

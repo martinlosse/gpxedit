@@ -88,8 +88,10 @@ Merges the given segments by appending each segment after the first to the previ
 | ---       | ---         | 
 | segment   | The track segment to modify.  |
 | start     | The start time for the segment. Will be applied to the first waypoint. |
-| end       | The end time for the segment. Will be applied to the last segemnt.     |
+| end       | The end time for the segment. Will be applied to the last segment.     |
 
 Rewrites the timestamp on every waypoint of the given segment. 
-The first and the last segment assume the start and end time respectveily.
-The timestamps of intermediate waypoints are approximated based on the duration between start and end and the number of waypoints in between. 
+The first and the last segment assume the start and end time respectively.
+Approximates the timestamps of intermediate waypoints based on 
+- the duration between start and end times and
+- the number of waypoints in between. 

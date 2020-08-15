@@ -2,6 +2,8 @@ package de.martinlosse.gpxedit.editor;
 
 import de.martinlosse.gpxedit.model.TrackSegment;
 import de.martinlosse.gpxedit.model.Waypoint;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class GpsEditor {
@@ -41,6 +43,19 @@ public class GpsEditor {
         TrackSegment segment2 = new TrackSegment(trackPoints.subList(splitIndex, trackPoints.size()));
 
         return List.of(segment1, segment2);
+    }
+
+    public static TrackSegment reverse(TrackSegment sourceSegment, TimestampMode timestampMode) {
+        TrackSegment reversedSegment = reverseWaypointOrder(sourceSegment);
+
+        return timestampMode.updateTimestamps(reversedSegment);
+    }
+
+    private static TrackSegment reverseWaypointOrder(TrackSegment sourceSegment) {
+        var reversedWps = new ArrayList<>(sourceSegment.getTrackPoints());
+        Collections.reverse(reversedWps);
+        TrackSegment reversedSegment = new TrackSegment(reversedWps);
+        return reversedSegment;
     }
 
 }
