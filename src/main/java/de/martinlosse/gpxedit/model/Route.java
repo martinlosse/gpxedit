@@ -15,4 +15,16 @@ public class Route {
 
         this.routePoints = routePoints;
     }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public String getType() {
+        return type;
+    }
+    
+    public List<Waypoint> getRoutePoints() {
+        return routePoints;
+    }
 }

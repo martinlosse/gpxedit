@@ -25,4 +25,28 @@ public class GpxFile {
         this.routes = Collections.unmodifiableList(routes);
         this.tracks = Collections.unmodifiableList(tracks);
     }
+    
+    public String getCreator() {
+        return creator;
+    }
+    
+    public String getVersion() {
+        return version;
+    }
+    
+    public ZonedDateTime getTimestamp() {
+        return timestamp;
+    }
+    
+    public List<Waypoint> getWaypoints() {
+        return waypoints;
+    }
+    
+    public List<Route> getRoutes() {
+        return routes;
+    }
+    
+    public List<Track> getTracks() {
+        return tracks;
+    }
 }

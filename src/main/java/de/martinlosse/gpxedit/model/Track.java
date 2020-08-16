@@ -15,5 +15,16 @@ public class Track {
         this.type = type;
         this.segments = Collections.unmodifiableList(segments);
     }
-
+    
+    public String getName() {
+        return name;
+    }
+    
+    public String getType() {
+        return type;
+    }
+    
+    public List<TrackSegment> getSegments() {
+        return segments;
+    }
 }

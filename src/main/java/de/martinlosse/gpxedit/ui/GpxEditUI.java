@@ -1,6 +1,6 @@
 package de.martinlosse.gpxedit.ui;
 
-import de.martinlosse.gpxedit.App;
+import de.martinlosse.gpxedit.GpxEdit;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -25,7 +25,7 @@ public class GpxEditUI extends Application {
     }
 
     private static Parent loadFXML(String fxml) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(GpxEdit.class.getResource(fxml + ".fxml"));
         return fxmlLoader.load();
     }
 
