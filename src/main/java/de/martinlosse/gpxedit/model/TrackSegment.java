@@ -1,6 +1,5 @@
 package de.martinlosse.gpxedit.model;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -9,7 +8,7 @@ public class TrackSegment {
     private final List<Waypoint> trackPoints;
 
     public TrackSegment(List<Waypoint> trackPoints) {
-        this.trackPoints = Collections.unmodifiableList(trackPoints);
+        this.trackPoints = trackPoints;
     }
 
     public List<Waypoint> getTrackPoints() {

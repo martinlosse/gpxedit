@@ -16,7 +16,7 @@ public class GpxEditorSplitTest {
     @MethodSource("testCases")
     @ParameterizedTest
     void testSplitSegments(TestCaseSplit testCase) {
-        List<TrackSegment> splitSegments = GpsEditor.split(testCase.sourceSegment, testCase.splitIndex);
+        List<TrackSegment> splitSegments = GpxEditor.split(testCase.sourceSegment, testCase.splitIndex);
         
         assertThat(splitSegments.size()).isEqualTo(2);
         assertThat(splitSegments.get(0)).isEqualTo(testCase.splitSegment1);

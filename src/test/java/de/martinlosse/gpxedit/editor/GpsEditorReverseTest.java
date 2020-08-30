@@ -16,7 +16,7 @@ public class GpsEditorReverseTest {
     @MethodSource({"testCasesDrop", "testCasesReverse", "testCasesStartAt"})
     @ParameterizedTest
     void testReverseDrop(TestCaseReverse testCase) {
-        TrackSegment reversed = GpsEditor.reverse(testCase.sourceSegment, testCase.timestampMode);
+        TrackSegment reversed = GpxEditor.reverse(testCase.sourceSegment, testCase.timestampMode);
         
         assertThat(reversed).isEqualTo(testCase.reversedSegment);
     }

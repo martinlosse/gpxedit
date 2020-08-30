@@ -1,6 +1,5 @@
 package de.martinlosse.gpxedit.model;
 
-import java.util.Collections;
 import java.util.List;
 
 public class Track {
@@ -13,7 +12,7 @@ public class Track {
     public Track(String name, String type, List<TrackSegment> segments) {
         this.name = name;
         this.type = type;
-        this.segments = Collections.unmodifiableList(segments);
+        this.segments = segments;
     }
     
     public String getName() {

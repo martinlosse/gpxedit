@@ -17,7 +17,7 @@ public class GpxEditorRewriteTimestampTest {
     @MethodSource("testCases")
     @ParameterizedTest
     void testSplitSegments(TestCaseRewrite testCase) {
-        TrackSegment result = GpsEditor.rewriteTimestamps(testCase.sourceSegment, testCase.startTime, testCase.endTime);
+        TrackSegment result = GpxEditor.rewriteTimestamps(testCase.sourceSegment, testCase.startTime, testCase.endTime);
         
         assertThat(result).isNotNull();
         assertThat(result).isEqualTo(testCase.targetSegment);

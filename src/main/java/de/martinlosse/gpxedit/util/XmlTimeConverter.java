@@ -32,6 +32,6 @@ public class XmlTimeConverter {
     }
     
     public ZonedDateTime fromXmlTime(XMLGregorianCalendar cal) {
-        return cal.toGregorianCalendar().toZonedDateTime();
+        return cal == null ? null : cal.toGregorianCalendar().toZonedDateTime();
     }
 }

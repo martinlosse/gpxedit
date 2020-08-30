@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class GpsEditor {
+public class GpxEditor {
     
     /**
      * <p>
